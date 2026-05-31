@@ -3,27 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BIRDS Club Certificate Generator</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Pinyon+Script&family=Playfair+Display:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Certificate Generator</title>
     <style>
+      @font-face {
+        font-family: "Google Sans Bold";
+        src: url("GoogleSans-Bold.ttf") format("truetype");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
       :root {
-        --bg-primary: #0a0a0f;
-        --bg-card: #12121a;
-        --bg-elevated: #1a1a2e;
-        --accent-gold: #f0b429;
-        --accent-gold-light: #ffd166;
-        --accent-purple: #7c3aed;
-        --text-primary: #f0ede8;
-        --text-muted: #8b8a9b;
-        --border: rgba(240, 180, 41, 0.15);
-        --glow: rgba(240, 180, 41, 0.08);
-        --danger: #ef4444;
+        --blue-900: #0c2a5a;
+        --blue-700: #1f5fbf;
+        --blue-500: #4285f4;
+        --blue-300: #8ab4f8;
+        --white: #ffffff;
+        --glass: rgba(255, 255, 255, 0.55);
+        --glass-border: rgba(255, 255, 255, 0.35);
+        --shadow: rgba(18, 61, 140, 0.18);
+        --google-red: #ea4335;
+        --google-yellow: #fbbc05;
+        --google-green: #34a853;
       }
 
       * {
@@ -33,135 +34,141 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "DM Sans", sans-serif;
+        font-family: "Google Sans Bold", "Segoe UI", sans-serif;
+        color: var(--blue-900);
         background:
-          radial-gradient(
-            circle at 50% 20%,
-            rgba(240, 180, 41, 0.12),
-            rgba(10, 10, 15, 0.2) 55%,
-            transparent 70%
-          ),
-          var(--bg-primary);
-        color: var(--text-primary);
+          radial-gradient(circle at top left, #e8f0fe 0%, transparent 52%),
+          radial-gradient(circle at 70% 20%, #d2e3fc 0%, transparent 45%),
+          linear-gradient(135deg, #f8fbff 0%, #dbe9ff 55%, #c6dcff 100%);
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 32px 20px;
+        padding: 32px 18px 50px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      .glow-orb {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        filter: blur(2px);
+        opacity: 0.25;
+        pointer-events: none;
+      }
+
+      .glow-orb.orb-1 {
+        background: radial-gradient(circle, var(--blue-300), transparent 70%);
+        top: -60px;
+        left: -80px;
+      }
+
+      .glow-orb.orb-2 {
+        background: radial-gradient(circle, #d7f0ff, transparent 70%);
+        bottom: -80px;
+        right: -60px;
       }
 
       .container {
-        width: 100%;
+        width: min(980px, 100%);
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        align-items: start;
+        z-index: 1;
       }
 
-      .card {
-        position: relative;
-        background: var(--bg-card);
+      .panel {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
         border-radius: 20px;
-        padding: 48px;
-        border: 1px solid var(--border);
-        box-shadow: 0 0 60px rgba(240, 180, 41, 0.06);
-        max-width: 520px;
-        margin: 0 auto;
+        padding: 28px;
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 30px 60px var(--shadow);
       }
 
-      .card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        border-radius: 20px 20px 0 0;
-        background: linear-gradient(90deg, #f0b429, #e09000);
-      }
-
-      .card-dashboard {
-        max-width: 720px;
-      }
-
-      .card-admin-login,
-      .card-home {
-        max-width: 520px;
-      }
-
-      .brand {
+      .brand-pill {
         display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 6px 14px;
+        gap: 8px;
+        padding: 8px 14px;
         border-radius: 999px;
-        border: 1px solid var(--accent-gold);
-        color: var(--accent-gold);
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3em;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
         text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--blue-700);
+        border: 1px solid rgba(66, 133, 244, 0.3);
+      }
+
+      .logo {
+        width: clamp(120px, 26vw, 180px);
+        height: auto;
+        display: block;
+        margin-bottom: 14px;
       }
 
       .title {
-        margin: 18px 0 10px;
-        font-size: 2.4rem;
-        font-family: "Playfair Display", serif;
-        color: var(--text-primary);
-        font-weight: 600;
+        margin: 18px 0 12px;
+        font-size: clamp(1.8rem, 2.4vw, 2.6rem);
+        color: var(--blue-900);
       }
 
       .subtitle {
-        margin: 0 0 28px;
-        color: var(--text-muted);
+        margin: 0 0 22px;
         line-height: 1.6;
         font-size: 0.98rem;
+        color: #22447b;
+        font-family: "Segoe UI", sans-serif;
       }
 
       .form-grid {
         display: grid;
-        gap: 16px;
+        gap: 14px;
       }
 
       label {
-        font-weight: 600;
-        font-size: 0.72rem;
-        letter-spacing: 0.16em;
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
+        color: #4163a8;
         margin-bottom: 6px;
         display: block;
-        color: var(--text-muted);
       }
 
-      input,
-      select {
+      input {
         width: 100%;
         padding: 12px 14px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
+        border-radius: 12px;
+        border: 1px solid rgba(66, 133, 244, 0.3);
+        background: rgba(255, 255, 255, 0.8);
         font-size: 1rem;
-        background: #0a0a0f;
-        color: var(--text-primary);
+        color: var(--blue-900);
+        font-family: "Google Sans Bold", "Segoe UI", sans-serif;
         transition:
           border 0.2s ease,
           box-shadow 0.2s ease;
-        font-family: inherit;
       }
 
       input::placeholder {
-        color: var(--text-muted);
+        color: #6a8ac7;
+        font-family: "Segoe UI", sans-serif;
       }
 
-      input:focus,
-      select:focus {
+      input:focus {
         outline: none;
-        border-color: var(--accent-gold);
-        box-shadow: 0 0 0 3px var(--glow);
+        border-color: var(--blue-500);
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
       }
 
       .btn {
         border: none;
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 12px 18px;
         font-size: 1rem;
-        font-weight: 600;
         cursor: pointer;
+        font-weight: 700;
         transition:
           transform 0.2s ease,
           box-shadow 0.2s ease;
@@ -171,90 +178,63 @@
         gap: 8px;
       }
 
-      .btn-full {
-        width: 100%;
-      }
-
       .btn-primary {
-        background: linear-gradient(135deg, #f0b429, #e09000);
-        color: #0a0a0f;
-        box-shadow: 0 10px 24px rgba(240, 180, 41, 0.2);
+        background: linear-gradient(120deg, var(--blue-500), #66a3ff);
+        color: var(--white);
+        box-shadow: 0 14px 26px rgba(66, 133, 244, 0.32);
       }
 
       .btn-primary:hover {
-        transform: scale(1.02);
-        box-shadow: 0 12px 30px rgba(240, 180, 41, 0.35);
-      }
-
-      .btn-primary:active {
-        transform: scale(0.98);
+        transform: translateY(-1px) scale(1.01);
+        box-shadow: 0 18px 34px rgba(66, 133, 244, 0.4);
       }
 
       .btn-secondary {
-        background: transparent;
-        color: var(--accent-gold);
-        border: 1px solid var(--accent-gold);
+        background: rgba(255, 255, 255, 0.85);
+        color: var(--blue-700);
+        border: 1px solid rgba(66, 133, 244, 0.3);
       }
 
-      .btn-secondary:hover {
-        box-shadow: 0 0 18px rgba(240, 180, 41, 0.25);
+      .btn-link {
+        background: none;
+        border: none;
+        color: var(--blue-700);
+        font-size: 0.85rem;
+        cursor: pointer;
       }
 
       .error {
-        color: #fca5a5;
-        font-size: 0.9rem;
-        font-weight: 600;
         display: none;
-        background: rgba(127, 29, 29, 0.35);
         padding: 10px 12px;
-        border-left: 3px solid var(--danger);
-        border-radius: 8px;
-      }
-
-      .link-btn {
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        cursor: pointer;
-        padding: 0;
-      }
-
-      .link-btn:hover {
-        color: var(--accent-gold);
+        border-radius: 10px;
+        background: rgba(234, 67, 53, 0.12);
+        border: 1px solid rgba(234, 67, 53, 0.25);
+        color: #b3261e;
+        font-size: 0.9rem;
+        font-family: "Segoe UI", sans-serif;
       }
 
       .preview-area {
-        margin-top: 24px;
         display: none;
         flex-direction: column;
-        gap: 16px;
-        align-items: center;
-        background: var(--bg-elevated);
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid var(--border);
+        gap: 14px;
+        margin-top: 18px;
       }
 
       .preview-img {
         width: 100%;
-        border-radius: 12px;
-        border: 1px solid rgba(240, 180, 41, 0.4);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-      }
-
-      .footer-link {
-        margin-top: 26px;
-        text-align: center;
+        border-radius: 16px;
+        border: 1px solid rgba(66, 133, 244, 0.25);
+        box-shadow: 0 22px 40px rgba(15, 67, 165, 0.25);
       }
 
       .screen {
         display: none;
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(12px);
         transition:
-          opacity 0.3s ease,
-          transform 0.3s ease;
+          opacity 0.35s ease,
+          transform 0.35s ease;
       }
 
       .screen.active {
@@ -263,295 +243,117 @@
         transform: translateY(0);
       }
 
-      .admin-bar {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 18px 22px;
-        margin-bottom: 28px;
-      }
-
       .admin-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
-        flex-wrap: wrap;
-      }
-
-      .admin-title {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .admin-title .logo-text {
-        font-family: "Playfair Display", serif;
-        font-size: 1.4rem;
-        color: var(--text-primary);
-      }
-
-      .admin-title .dashboard-subtitle {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-      }
-
-      .dashboard-grid {
-        display: grid;
-        gap: 18px;
-      }
-
-      .type-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
       }
 
-      .type-btn {
-        padding: 14px;
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        background: var(--bg-elevated);
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        color: var(--text-primary);
-        display: flex;
+      .admin-badge {
+        display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 6px;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--blue-700);
       }
 
-      #adminDashboard .type-btn {
-        opacity: 0;
-        transform: translateY(8px);
+      .title-tight {
+        margin: 6px 0 0;
       }
 
-      #adminDashboard.screen.active .type-btn {
-        animation: typeFade 0.35s ease forwards;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(1) {
-        animation-delay: 0.05s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(2) {
-        animation-delay: 0.1s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(3) {
-        animation-delay: 0.15s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(4) {
-        animation-delay: 0.2s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(5) {
-        animation-delay: 0.25s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(6) {
-        animation-delay: 0.3s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(7) {
-        animation-delay: 0.35s;
-      }
-
-      #adminDashboard.screen.active .type-btn:nth-child(8) {
-        animation-delay: 0.4s;
-      }
-
-      .type-btn::before {
-        font-size: 1.1rem;
-      }
-
-      .type-btn[data-type="winner"]::before {
-        content: "🏆";
-      }
-
-      .type-btn[data-type="runner"]::before {
-        content: "🥈";
-      }
-
-      .type-btn[data-type="secondrunner"]::before {
-        content: "🥉";
-      }
-
-      .type-btn[data-type="bestinnovation"]::before {
-        content: "💡";
-      }
-
-      .type-btn[data-type="coordinator"]::before {
-        content: "📋";
-      }
-
-      .type-btn[data-type="panelist"]::before {
-        content: "🎤";
-      }
-
-      .type-btn[data-type="judge"]::before {
-        content: "⚖️";
-      }
-
-      .type-btn[data-type="mentor"]::before {
-        content: "🎓";
-      }
-
-      .type-btn:hover {
-        border-color: var(--accent-gold);
-        transform: translateY(-2px);
-      }
-
-      .type-btn.active {
-        background: linear-gradient(135deg, #f0b429, #e09000);
-        border-color: transparent;
-        color: #0a0a0f;
-        box-shadow: 0 12px 28px rgba(240, 180, 41, 0.35);
-      }
-
-      #adminStep3 {
-        overflow: hidden;
-        max-height: 0;
-        opacity: 0;
-        transform: translateY(-6px);
-        transition: all 0.25s ease;
-      }
-
-      #adminStep3[style*="display: block"] {
-        max-height: 240px;
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .step-label {
-        color: var(--accent-gold);
-        font-weight: 600;
-      }
-
-      .lock-icon {
-        font-size: 2rem;
-        color: var(--accent-gold);
+      .center-actions {
+        margin-top: 18px;
         text-align: center;
-        margin-bottom: 8px;
       }
 
       .hidden-canvas {
         display: none;
       }
 
-      @keyframes typeFade {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (max-width: 900px) {
-        .card-dashboard {
-          max-width: 100%;
-        }
-
-        .type-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+      .color-line {
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          var(--google-blue, #4285f4),
+          var(--google-red),
+          var(--google-yellow),
+          var(--google-green)
+        );
+        margin: 18px 0;
       }
 
       @media (max-width: 720px) {
-        body {
-          padding: 16px;
-        }
-
-        .card {
-          padding: 32px 24px;
-        }
-
-        .title {
-          font-size: 2rem;
+        .panel {
+          padding: 22px;
         }
       }
     </style>
   </head>
   <body>
-    <div style="text-align: center; margin-bottom: 2rem">
-      <img
-        src="Logo.png"
-        alt="AI4DRUGFREE Logo"
-        style="max-width: clamp(200px, 40vw, 400px); height: auto"
-      />
-    </div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
     <div class="container">
-      <!-- STUDENT HOME SCREEN -->
       <section id="studentScreen" class="screen active">
-        <div class="card card-home">
-          <div class="card-header">
-            <span class="brand">brought to u by BIRDS CLUB</span>
-            <h1 class="title">Claim Your Certificate</h1>
-            <p class="subtitle">
-              Select your event, enter your full name, and submit your access
-              code to download a participation certificate.
-            </p>
-          </div>
+        <div class="panel">
+          <img class="logo" src="gsa-logo.png" alt="GSA Logo" />
+          <span class="brand-pill">Pitch Night</span>
+          <h1 class="title">Generate Your Certificate</h1>
+          <p class="subtitle">
+            Enter your full name and generate a professional certificate in one
+            click.
+          </p>
+
+          <div class="color-line"></div>
 
           <form id="studentForm" class="form-grid">
-            <div>
-              <label for="studentEventSelect">Select Event</label>
-              <select id="studentEventSelect" required></select>
-            </div>
             <div>
               <label for="studentNameInput">Full Name</label>
               <input
                 id="studentNameInput"
                 type="text"
-                placeholder="e.g. Kalmadi Saisiddi"
-                required
+                placeholder="Type your name"
                 autocomplete="name"
-              />
-            </div>
-            <div>
-              <label for="studentCodeInput">Access Code</label>
-              <input
-                id="studentCodeInput"
-                type="password"
-                placeholder="Enter event access code"
                 required
-                autocomplete="one-time-code"
               />
             </div>
-            <span class="error" id="studentError">
-              Invalid access code. Please check with your event coordinator.
-            </span>
-            <button type="submit" class="btn btn-primary btn-full">
-              Generate Participation Certificate
+            <button type="submit" class="btn btn-primary">
+              Generate Certificate
             </button>
           </form>
 
           <div id="studentPreview" class="preview-area">
             <img id="studentPreviewImg" class="preview-img" alt="Certificate" />
-            <button id="studentDownloadBtn" class="btn btn-primary btn-full">
+            <button id="studentDownloadBtn" class="btn btn-primary">
               Download Certificate
             </button>
           </div>
 
-          <div class="footer-link">
-            <button id="openAdminBtn" class="link-btn" type="button">
+          <div class="center-actions">
+            <button id="openAdminBtn" class="btn-link" type="button">
               Admin Portal
             </button>
           </div>
         </div>
       </section>
 
-      <!-- ADMIN LOGIN SCREEN -->
       <section id="adminLoginScreen" class="screen">
-        <div class="card card-admin-login">
-          <div class="lock-icon">🔒</div>
-          <span class="brand">brought to u by BIRDS CLUB</span>
-          <h1 class="title">Admin Portal</h1>
-          <p class="subtitle">BIRDS Club Internal Access</p>
+        <div class="panel">
+          <div class="admin-header">
+            <div>
+              <div class="admin-badge">Admin Access</div>
+              <div class="title title-tight">Admin Portal</div>
+            </div>
+            <button id="adminBackBtn" class="btn btn-secondary" type="button">
+              Back
+            </button>
+          </div>
 
           <form id="adminLoginForm" class="form-grid">
             <div>
@@ -559,7 +361,7 @@
               <input
                 id="adminUserInput"
                 type="text"
-                placeholder="Admin username"
+                placeholder="Enter admin username"
                 required
                 autocomplete="username"
               />
@@ -569,7 +371,7 @@
               <input
                 id="adminPassInput"
                 type="password"
-                placeholder="Password"
+                placeholder="Enter password"
                 required
                 autocomplete="current-password"
               />
@@ -577,299 +379,69 @@
             <span class="error" id="adminError">
               Invalid username or password.
             </span>
-            <button type="submit" class="btn btn-primary btn-full">
-              Login
-            </button>
-            <button
-              id="adminBackBtn"
-              type="button"
-              class="btn btn-secondary btn-full"
-            >
-              Back to Home
-            </button>
+            <button type="submit" class="btn btn-primary">Login</button>
           </form>
         </div>
       </section>
 
-      <!-- ADMIN DASHBOARD -->
       <section id="adminDashboard" class="screen">
-        <div class="card card-dashboard">
-          <div class="admin-bar">
-            <div class="admin-header">
-              <div class="admin-title">
-                <div class="logo-text">BIRDS Club</div>
-                <div class="dashboard-subtitle">Admin Dashboard</div>
-              </div>
-              <button id="logoutBtn" class="btn btn-secondary">Logout</button>
+        <div class="panel">
+          <div class="admin-header">
+            <div>
+              <div class="admin-badge">Admin Tools</div>
+              <div class="title title-tight">Certificate Desk</div>
             </div>
+            <button id="logoutBtn" class="btn btn-secondary">Logout</button>
           </div>
 
-          <div class="dashboard-grid">
+          <form id="adminForm" class="form-grid">
             <div>
-              <label for="adminEventSelect">Step 1: Select Event</label>
-              <select id="adminEventSelect" required></select>
+              <label for="adminNameInput">Full Name</label>
+              <input
+                id="adminNameInput"
+                type="text"
+                placeholder="Enter recipient name"
+                autocomplete="name"
+                required
+              />
             </div>
+            <button id="adminGenerateBtn" class="btn btn-primary" type="submit">
+              Generate Certificate
+            </button>
+          </form>
 
-            <div>
-              <label>Step 2: Select Certificate Type</label>
-              <div class="type-grid" id="certTypeGrid"></div>
-            </div>
-
-            <div id="adminStep3" style="display: none">
-              <label id="adminStepLabel" class="step-label">Step 3</label>
-              <div class="form-grid" style="margin-top: 12px">
-                <div>
-                  <label for="adminNameInput">Enter Full Name</label>
-                  <input
-                    id="adminNameInput"
-                    type="text"
-                    placeholder="e.g. Kalmadi Saisiddi"
-                    autocomplete="name"
-                  />
-                </div>
-                <button
-                  id="adminGenerateBtn"
-                  class="btn btn-primary btn-full"
-                  type="button"
-                >
-                  Generate Certificate
-                </button>
-              </div>
-            </div>
-
-            <div id="adminPreview" class="preview-area">
-              <img id="adminPreviewImg" class="preview-img" alt="Certificate" />
-              <button id="adminDownloadBtn" class="btn btn-primary btn-full">
-                Download Certificate
-              </button>
-            </div>
+          <div id="adminPreview" class="preview-area">
+            <img id="adminPreviewImg" class="preview-img" alt="Certificate" />
+            <button id="adminDownloadBtn" class="btn btn-primary">
+              Download Certificate
+            </button>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- Hidden Canvas -->
     <canvas id="certCanvas" class="hidden-canvas"></canvas>
 
     <script>
-      // ==========================
-      // TODO: Update event display names here
-      // ==========================
-      const EVENTS = [
-        { id: "event1", name: "Angels vs Devils" },
-        { id: "event2", name: "TalkBot Arena" },
-        { id: "event3", name: "AI Meme Warfare" },
-        { id: "event4", name: "Prompt Engineering Battle" },
-        { id: "event5", name: "AI on Trial (AI Debate)" },
-        { id: "event6", name: "BeatMind (AI Music Fusion)" },
-        { id: "event7", name: "Kick the Habit - AI Short Film Challenge" },
-        { id: "event8", name: "Research Poster" },
-        { id: "event9", name: "Hack4Change Hackathon" },
-      ];
-
-      // ==========================
-      // TODO: Update access codes here
-      // ==========================
-      const EVENT_CODES = {
-        event1: "AVD2025",
-        event2: "TBA2025",
-        event3: "MEME2025",
-        event4: "PROMPT2025",
-        event5: "DEBATE2025",
-        event6: "BEAT2025",
-        event7: "FILM2025",
-        event8: "POSTER2025",
-        event9: "HACK2025",
-      };
-
-      // ==========================
-      // TODO: Update participation certificate images here
-      // ==========================
-      const PARTICIPATION_IMAGE_MAP = {
-        event1: "Certs/part/Angels vs Devils.jpg",
-        event2: "Certs/part/TalkBot Arena.jpg",
-        event3: "Certs/part/AI Meme Warfare.jpg",
-        event4: "Certs/part/Prompt Engineering Battle.jpg",
-        event5: "Certs/part/AI on Trial.jpg",
-        event6: "Certs/part/BeatMind_ AI Music Fusion.jpg",
-        event7: "Certs/part/Kick the Habit_ AI Short Film Challenge.jpg",
-        event8: "Certs/part/Research Poster Presentation.jpg",
-        event9: "Certs/part/Hack4Change Hackathon.jpg",
-      };
-
-      // ==========================
-      // TODO: Update admin credentials here
-      // ==========================
+      const CERT_IMAGE_PATH = "Certs/Cert.jpg";
       const ADMIN_USER = "birdscanfly";
       const ADMIN_PASS = "drugsaregood";
 
-      // ==========================
-      // TODO: Update certificate placement values here
-      // ==========================
-      const CERT_CONFIG = {
-        event1: {
-          participation: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-          winner: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#5c3a21",
-            fontFamily: "Pinyon Script",
-          },
-          runner: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#5c3a21",
-            fontFamily: "Pinyon Script",
-          },
-          secondrunner: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#5c3a21",
-            fontFamily: "Pinyon Script",
-          },
-          coordinator: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-          panelist: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-          judge: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-          mentor: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-          bestinnovation: {
-            x: 50,
-            y: 50,
-            fontSize: 350,
-            fontColor: "#d4af37",
-            fontFamily: "Pinyon Script",
-          },
-        },
-        event2: {},
-        event3: {},
-        event4: {},
-        event5: {},
-        event6: {},
-        event7: {},
-        event8: {},
-        event9: {},
+      const NAME_CONFIG = {
+        xPercent: 50,
+        yPercent: 49.0,
+        fontSize: 700,
+        fontColor: "#1c1c1c",
+        maxWidthPercent: 0.68,
+        fontFamily: "Google Sans Bold",
       };
 
-      // ==========================
-      // TODO: Copy event1 settings into event2-event9
-      // ==========================
-      [
-        "event2",
-        "event3",
-        "event4",
-        "event5",
-        "event6",
-        "event7",
-        "event8",
-        "event9",
-      ].forEach((eventId) => {
-        CERT_CONFIG[eventId] = JSON.parse(JSON.stringify(CERT_CONFIG.event1));
-      });
-
-      // ==========================
-      // CERTIFICATE TYPES
-      // ==========================
-      const CERT_TYPES = [
-        { key: "winner", label: "Winner" },
-        { key: "runner", label: "Runner Up" },
-        { key: "secondrunner", label: "2nd Runner Up" },
-        { key: "bestinnovation", label: "Best Innovation" },
-        { key: "coordinator", label: "Coordinator" },
-        { key: "judge", label: "Judge" },
-        { key: "mentor", label: "Mentor" },
-      ];
-
-      const CERT_HIDDEN_CODES = {
-        event1: {
-          winner: "1",
-          runner: "2",
-        },
-        event2: {
-          winner: "5",
-          runner: "6",
-        },
-        event3: {
-          winner: "3",
-          runner: "4",
-        },
-        event4: {
-          winner: "7",
-          runner: "8",
-        },
-        event5: {
-          winner: "9",
-          runner: "10",
-        },
-        event6: {
-          winner: "11",
-          runner: "12",
-        },
-        event7: {
-          winner: "13",
-          runner: "14",
-        },
-        event8: {
-          winner: "15",
-          runner: "16",
-        },
-        event9: {
-          winner: "17",
-          runner: "18",
-          secondrunner: "19",
-          bestinnovation: "20",
-        },
-      };
-
-      const CERT_SHARED_HIDDEN_CODES = {
-        coordinator: "1",
-        judge: "2",
-        mentor: "3",
-      };
-
-      // ==========================
-      // DOM REFERENCES
-      // ==========================
       const studentScreen = document.getElementById("studentScreen");
       const adminLoginScreen = document.getElementById("adminLoginScreen");
       const adminDashboard = document.getElementById("adminDashboard");
 
       const studentForm = document.getElementById("studentForm");
-      const studentEventSelect = document.getElementById("studentEventSelect");
       const studentNameInput = document.getElementById("studentNameInput");
-      const studentCodeInput = document.getElementById("studentCodeInput");
-      const studentError = document.getElementById("studentError");
       const studentPreview = document.getElementById("studentPreview");
       const studentPreviewImg = document.getElementById("studentPreviewImg");
       const studentDownloadBtn = document.getElementById("studentDownloadBtn");
@@ -881,12 +453,8 @@
       const adminError = document.getElementById("adminError");
       const adminBackBtn = document.getElementById("adminBackBtn");
 
-      const adminEventSelect = document.getElementById("adminEventSelect");
-      const certTypeGrid = document.getElementById("certTypeGrid");
-      const adminStep3 = document.getElementById("adminStep3");
-      const adminStepLabel = document.getElementById("adminStepLabel");
+      const adminForm = document.getElementById("adminForm");
       const adminNameInput = document.getElementById("adminNameInput");
-      const adminGenerateBtn = document.getElementById("adminGenerateBtn");
       const adminPreview = document.getElementById("adminPreview");
       const adminPreviewImg = document.getElementById("adminPreviewImg");
       const adminDownloadBtn = document.getElementById("adminDownloadBtn");
@@ -894,17 +462,9 @@
 
       const certCanvas = document.getElementById("certCanvas");
 
-      // ==========================
-      // STATE
-      // ==========================
       let studentDownloadUrl = "";
       let adminDownloadUrl = "";
-      let selectedAdminType = "";
-      let selectedAdminHiddenCode = "";
 
-      // ==========================
-      // UI HELPERS
-      // ==========================
       function showScreen(screen) {
         [studentScreen, adminLoginScreen, adminDashboard].forEach((el) => {
           el.classList.remove("active");
@@ -912,100 +472,21 @@
         screen.classList.add("active");
       }
 
-      function resetStudentPreview() {
-        studentPreview.style.display = "none";
-        studentPreviewImg.src = "";
-        studentDownloadUrl = "";
-      }
-
-      function resetAdminPreview() {
-        adminPreview.style.display = "none";
-        adminPreviewImg.src = "";
-        adminDownloadUrl = "";
-      }
-
       function sanitizeFilename(value) {
         return value.trim().replace(/[^a-zA-Z0-9]+/g, "_");
       }
 
-      // ==========================
-      // POPULATE EVENT DROPDOWNS
-      // ==========================
-      function populateEvents(selectEl) {
-        selectEl.innerHTML = "";
-        const placeholder = document.createElement("option");
-        placeholder.value = "";
-        placeholder.textContent = "Select an event";
-        placeholder.disabled = true;
-        placeholder.selected = true;
-        selectEl.appendChild(placeholder);
-
-        EVENTS.forEach((event) => {
-          const option = document.createElement("option");
-          option.value = event.id;
-          option.textContent = event.name;
-          selectEl.appendChild(option);
-        });
+      function resetPreview(preview, previewImg) {
+        preview.style.display = "none";
+        previewImg.src = "";
       }
 
-      populateEvents(studentEventSelect);
-      populateEvents(adminEventSelect);
-
-      // ==========================
-      // BUILD CERT TYPE BUTTONS
-      // ==========================
-      CERT_TYPES.forEach((type) => {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "type-btn";
-        button.textContent = type.label;
-        button.dataset.type = type.key;
-        certTypeGrid.appendChild(button);
-      });
-
-      function getHiddenCode(eventId, certType) {
-        return (
-          CERT_HIDDEN_CODES[eventId]?.[certType] ||
-          CERT_SHARED_HIDDEN_CODES[certType] ||
-          ""
-        );
-      }
-
-      // ==========================
-      // CANVAS RENDERING
-      // ==========================
-      async function renderCertificate({
-        eventId,
-        certType,
-        name,
-        previewImg,
-        onRendered,
-      }) {
-        const config = CERT_CONFIG[eventId]?.[certType];
-        if (!config) {
-          return;
-        }
-
-        const hiddenCode = getHiddenCode(eventId, certType);
-        const imagePath =
-          certType === "participation"
-            ? PARTICIPATION_IMAGE_MAP[eventId]
-            : ["coordinator", "judge", "mentor"].includes(certType)
-              ? hiddenCode
-                ? `Certs/coor/${hiddenCode}.jpg`
-                : `Certs/coor/${eventId}.jpg`
-              : hiddenCode
-                ? `Certs/wine/${hiddenCode}.jpg`
-                : `Certs/${eventId}_${certType}.jpg`;
-        if (!imagePath) {
-          return;
-        }
+      async function renderCertificate({ name, previewImg, onRendered }) {
         const img = new Image();
-        img.src = encodeURI(imagePath);
-
+        img.src = encodeURI(CERT_IMAGE_PATH);
         await img.decode();
         await document.fonts.load(
-          `${config.fontSize}px "${config.fontFamily}"`,
+          `${NAME_CONFIG.fontSize}px "${NAME_CONFIG.fontFamily}"`,
         );
 
         certCanvas.width = img.naturalWidth;
@@ -1015,55 +496,35 @@
         ctx.clearRect(0, 0, certCanvas.width, certCanvas.height);
         ctx.drawImage(img, 0, 0, certCanvas.width, certCanvas.height);
 
-        const x = (config.x / 100) * certCanvas.width;
-        const y = (config.y / 100) * certCanvas.height;
-        ctx.fillStyle = config.fontColor;
-        ctx.textAlign = config.textAlign || "center";
-        ctx.textBaseline = config.textBaseline || "middle";
+        const x = (NAME_CONFIG.xPercent / 100) * certCanvas.width;
+        const y = (NAME_CONFIG.yPercent / 100) * certCanvas.height;
+        ctx.fillStyle = NAME_CONFIG.fontColor;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
 
-        // Dynamic text scaling based on max width
-        const maxWidth = certCanvas.width * (config.maxWidthPercent || 0.6);
-        let currentFontSize = config.fontSize;
-        ctx.font = `${currentFontSize}px "${config.fontFamily}"`;
-        let textWidth = ctx.measureText(name).width;
-
+        const maxWidth = certCanvas.width * NAME_CONFIG.maxWidthPercent;
+        let fontSize = NAME_CONFIG.fontSize;
+        ctx.font = `${fontSize}px "${NAME_CONFIG.fontFamily}"`;
+        const textWidth = ctx.measureText(name).width;
         if (textWidth > maxWidth) {
           const scaleFactor = maxWidth / textWidth;
-          currentFontSize = Math.floor(currentFontSize * scaleFactor);
-          ctx.font = `${currentFontSize}px "${config.fontFamily}"`;
+          fontSize = Math.floor(fontSize * scaleFactor);
+          ctx.font = `${fontSize}px "${NAME_CONFIG.fontFamily}"`;
         }
 
         ctx.fillText(name, x, y);
-
         const dataUrl = certCanvas.toDataURL("image/jpeg", 0.95);
         previewImg.src = dataUrl;
         onRendered(dataUrl);
       }
 
-      // ==========================
-      // STUDENT FLOW
-      // ==========================
       studentForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        studentError.style.display = "none";
-        resetStudentPreview();
-
-        const eventId = studentEventSelect.value;
+        resetPreview(studentPreview, studentPreviewImg);
         const name = studentNameInput.value.trim();
-        const code = studentCodeInput.value.trim();
-
-        if (!eventId || !name) {
-          return;
-        }
-
-        if (EVENT_CODES[eventId] !== code) {
-          studentError.style.display = "block";
-          return;
-        }
+        if (!name) return;
 
         await renderCertificate({
-          eventId,
-          certType: "participation",
           name,
           previewImg: studentPreviewImg,
           onRendered: (dataUrl) => {
@@ -1075,29 +536,13 @@
 
       studentDownloadBtn.addEventListener("click", () => {
         if (!studentDownloadUrl) return;
-        const eventId = studentEventSelect.value;
-        const eventName =
-          EVENTS.find((event) => event.id === eventId)?.name || eventId;
         const name = sanitizeFilename(studentNameInput.value);
-        const fileName = `${name}_${sanitizeFilename(eventName)}_Participation.jpg`;
         const link = document.createElement("a");
         link.href = studentDownloadUrl;
-        link.download = fileName;
+        link.download = `${name}_Certificate.jpg`;
         link.click();
       });
 
-      studentEventSelect.addEventListener("change", () => {
-        studentError.style.display = "none";
-        resetStudentPreview();
-      });
-
-      studentCodeInput.addEventListener("input", () => {
-        studentError.style.display = "none";
-      });
-
-      // ==========================
-      // ADMIN LOGIN FLOW
-      // ==========================
       openAdminBtn.addEventListener("click", () => {
         adminLoginForm.reset();
         adminError.style.display = "none";
@@ -1111,75 +556,23 @@
       adminLoginForm.addEventListener("submit", (event) => {
         event.preventDefault();
         adminError.style.display = "none";
-
         const username = adminUserInput.value.trim();
         const password = adminPassInput.value;
-
         if (username !== ADMIN_USER || password !== ADMIN_PASS) {
           adminError.style.display = "block";
           return;
         }
-
         adminLoginForm.reset();
         showScreen(adminDashboard);
       });
 
-      // ==========================
-      // ADMIN DASHBOARD FLOW
-      // ==========================
-      adminEventSelect.addEventListener("change", () => {
-        selectedAdminType = "";
-        selectedAdminHiddenCode = "";
-        adminStep3.style.display = "none";
-        adminNameInput.value = "";
-        resetAdminPreview();
-        Array.from(certTypeGrid.children).forEach((button) => {
-          const hiddenCode = getHiddenCode(
-            adminEventSelect.value,
-            button.dataset.type,
-          );
-          button.dataset.hiddenCode = hiddenCode;
-          button.classList.remove("active");
-        });
-      });
-
-      certTypeGrid.addEventListener("click", (event) => {
-        const button = event.target.closest("button");
-        if (!button) return;
-
-        const eventId = adminEventSelect.value;
-        if (!eventId) return;
-
-        selectedAdminType = button.dataset.type;
-        selectedAdminHiddenCode =
-          button.dataset.hiddenCode ||
-          getHiddenCode(eventId, selectedAdminType);
-        Array.from(certTypeGrid.children).forEach((btn) => {
-          btn.classList.toggle("active", btn === button);
-        });
-
-        adminStepLabel.textContent = `Step 3: ${
-          EVENTS.find((ev) => ev.id === eventId)?.name || eventId
-        } — ${
-          CERT_TYPES.find((type) => type.key === selectedAdminType)?.label ||
-          selectedAdminType
-        }`;
-        adminStep3.style.display = "block";
-        adminNameInput.value = "";
-        resetAdminPreview();
-      });
-
-      adminGenerateBtn.addEventListener("click", async () => {
-        const eventId = adminEventSelect.value;
+      adminForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        resetPreview(adminPreview, adminPreviewImg);
         const name = adminNameInput.value.trim();
-
-        if (!eventId || !selectedAdminType || !name) {
-          return;
-        }
+        if (!name) return;
 
         await renderCertificate({
-          eventId,
-          certType: selectedAdminType,
           name,
           previewImg: adminPreviewImg,
           onRendered: (dataUrl) => {
@@ -1191,33 +584,17 @@
 
       adminDownloadBtn.addEventListener("click", () => {
         if (!adminDownloadUrl) return;
-        const eventId = adminEventSelect.value;
-        const eventName =
-          EVENTS.find((event) => event.id === eventId)?.name || eventId;
-        const typeLabel =
-          CERT_TYPES.find((type) => type.key === selectedAdminType)?.label ||
-          selectedAdminType;
         const name = sanitizeFilename(adminNameInput.value);
-        const fileName = `${name}_${sanitizeFilename(eventName)}_${sanitizeFilename(
-          typeLabel,
-        )}.jpg`;
         const link = document.createElement("a");
         link.href = adminDownloadUrl;
-        link.download = fileName;
+        link.download = `${name}_Certificate.jpg`;
         link.click();
       });
 
       logoutBtn.addEventListener("click", () => {
-        adminEventSelect.value = "";
         adminNameInput.value = "";
-        selectedAdminType = "";
-        selectedAdminHiddenCode = "";
-        resetAdminPreview();
-        adminStep3.style.display = "none";
-        Array.from(certTypeGrid.children).forEach((button) => {
-          button.classList.remove("active");
-          button.dataset.hiddenCode = "";
-        });
+        adminDownloadUrl = "";
+        resetPreview(adminPreview, adminPreviewImg);
         showScreen(studentScreen);
       });
     </script>
